@@ -6,6 +6,7 @@ use serenity::model::gateway::Ready;
 use serenity::prelude::*;
 use shuttle_runtime::SecretStore;
 use tracing::{error, info};
+use rand::Rng;
 
 struct Bot;
 
@@ -18,7 +19,12 @@ impl EventHandler for Bot {
             }
         }
         if msg.content == "/oha" {
-            if let Err(e) = msg.channel_id.say(&ctx.http, "おはよう！").await {
+            let mut rng = rand::thread_rng(); // デフォルトの乱数生成器を初期化します
+            let mut oha_msg = "おはよう！";
+            if(rng.gen()%3==0){
+                oha_msg += "<:ohayou:1231070930944397342>" // おはようのカスタム絵文字のID
+            }
+            if let Err(e) = msg.channel_id.say(&ctx.http, oha_msg).await {
                 error!("Error sending message: {:?}", e);
             }
         }
