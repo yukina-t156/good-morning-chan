@@ -545,9 +545,11 @@ name = "good-morning-chan"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "rand",
  "serenity",
  "shuttle-runtime",
  "shuttle-serenity",
+ "thiserror",
  "tokio",
  "tracing",
 ]
