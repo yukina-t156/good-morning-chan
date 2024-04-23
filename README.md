@@ -15,3 +15,6 @@
 - https://docs.shuttle.rs/examples/serenity
 - https://zenn.dev/t4t5u0/articles/cd731e0293cf224cb4dc
 
+
+天気取得
+https://weather.tsukumijima.net/

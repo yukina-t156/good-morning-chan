@@ -8,6 +8,9 @@ use shuttle_runtime::SecretStore;
 use tracing::{error, info};
 use rand::prelude::*;
 
+
+mod weather;
+
 struct Bot;
 
 #[async_trait]
@@ -44,12 +47,36 @@ impl EventHandler for Bot {
                 error!("Error sending message: {:?}", e);
             }
         }
+        if msg.content == "/今日の天気" {
+            
+            let id = String::from("130010");
+            let url = format!("https://weather.tsukumijima.net/api/forecast/city/{}", id);
+            let data = weather::get_weather(&url).await;
+
+            let result = match data {
+                Ok(data) => {
+                    // 成功した場合の処理
+                    data
+                }
+                Err(_) => {
+                    // エラーの場合の処理
+                    String::from("API call is Failed. ごめんね！")
+                }
+            };
+            
+
+            if let Err(e) = msg.channel_id.say(&ctx.http, result).await {
+                error!("Error sending message: {:?}", e);
+            }
+        }
     }
 
     async fn ready(&self, _: Context, ready: Ready) {
         info!("{} is connected!", ready.user.name);
     }
 }
+
+
 
 #[shuttle_runtime::main]
 async fn serenity(
