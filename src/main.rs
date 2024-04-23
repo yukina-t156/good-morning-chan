@@ -20,21 +20,27 @@ impl EventHandler for Bot {
         }
         if msg.content == "/oha" {
             let mut rng = StdRng::from_entropy(); // デフォルトの乱数生成器を初期化します
-            let mut oha_msg = String::from("おはよう！");
-            if rng.gen_range(0..=9)%3==0 {
-                oha_msg += "<:ohayou:1231070930944397342>" // おはようのカスタム絵文字のID
+            let mut oha_msg = String::from("おはよう！<:ohayou:1231070930944397342>");
+            if rng.gen_range(0..30)>25 {
+                for _ in 0..40 {
+                    oha_msg += "<:ohayou:1231070930944397342>" // おはようのカスタム絵文字のID
+                }   
             }
             if let Err(e) = msg.channel_id.say(&ctx.http, oha_msg).await {
                 error!("Error sending message: {:?}", e);
             }
         }
-        if msg.content == "/good-morning" {
-            if let Err(e) = msg.channel_id.say(&ctx.http, "good morning!").await {
-                error!("Error sending message: {:?}", e);
-            }
-        }
-        if msg.content == "/おはよ" {
-            if let Err(e) = msg.channel_id.say(&ctx.http, "good morning!").await {
+        if msg.content == "/おはようのオーディションして" {
+            let mut rng = StdRng::from_entropy(); // デフォルトの乱数生成器を初期化します
+            let result = match rng.gen_range(0..100) {
+                0..=44 => String::from("合格"),
+                45..=69 => String::from("不合格"),
+                70..=84 => String::from("失格"),
+                85..=89 => String::from("出禁"),
+                90..=99 => String::from("優勝"),
+                _ => String::from("エラー"),
+            };
+            if let Err(e) = msg.channel_id.say(&ctx.http, result).await {
                 error!("Error sending message: {:?}", e);
             }
         }
